@@ -88,9 +88,6 @@ func NewNumber(str string) (*number, error) {
 }
 
 func judgeNumber(str string) int {
-	if str[0] == '-' || str[0] == '+' {
-		str = str[1:]
-	}
 	compile := regexp.MustCompile("^\\d+$")
 	if compile.MatchString(str) {
 		return intNumber

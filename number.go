@@ -3,7 +3,6 @@ package numcmp
 import (
 	"errors"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -14,6 +13,22 @@ type value interface {
 type number struct {
 	neg int
 	value
+}
+
+func cmpStringOfInteger(n1, n2 string) int {
+	l1 := len(n1)
+	l2 := len(n2)
+	if l1 > l2 {
+		return 1
+	} else if l1 < l2 {
+		return -1
+	}
+	if n1 > n2 {
+		return 1
+	} else if n1 < n2 {
+		return -1
+	}
+	return 0
 }
 
 func (n1 *number) Cmp(n2 *number) int {
@@ -52,21 +67,21 @@ func NewNumber(str string) (*number, error) {
 		str = str[1:]
 	}
 	numType := judgeNumber(str)
+
 	switch numType {
 	case intNumber:
-		i, err := strconv.Atoi(str)
-		if err != nil {
-			return nil, err
+		str = strings.TrimLeft(str, "0")
+		if str == "" {
+			str = "0"
 		}
-		return &number{neg, &integer{i}} , nil
+		return &number{neg, &integer{str}}, nil
 	case floatNumber:
-		trim := strings.TrimRight(str, "0")
-		split := strings.Split(trim, ".")
-		i, err := strconv.Atoi(split[0])
-		if err != nil {
-			return nil, err
+		str = strings.Trim(str, "0")
+		split := strings.Split(str, ".")
+		if split[0] == "" {
+			split[0] = "0"
 		}
-		return &number{neg, &float{i: i, decimal: split[1]}}, nil
+		return &number{neg, &float{i: split[0], decimal: split[1]}}, nil
 	default:
 		return nil, errors.New("unexpect input str: " + str)
 	}
@@ -80,7 +95,7 @@ func judgeNumber(str string) int {
 	if compile.MatchString(str) {
 		return intNumber
 	}
-	compile = regexp.MustCompile("\\d*\\.\\d*")
+	compile = regexp.MustCompile("^\\d*\\.\\d*$")
 	if compile.MatchString(str) {
 		return floatNumber
 	}

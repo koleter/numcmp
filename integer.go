@@ -1,7 +1,7 @@
 package numcmp
 
 type integer struct {
-	i int
+	i string
 }
 
 func (n1 *integer) compare(n2 value) int {
@@ -21,10 +21,5 @@ func (n1 *integer) compareFloat(n2 *float) int {
 }
 
 func (n1 *integer) compareInteger(n2 *integer) int {
-	if n1.i > n2.i {
-		return 1
-	} else if n1.i == n2.i {
-		return 0
-	}
-	return -1
+	return cmpStringOfInteger(n1.i, n2.i)
 }

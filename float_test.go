@@ -1,11 +1,13 @@
 package numcmp
 
-import "testing"
+import (
+	"testing"
+)
 import "github.com/stretchr/testify/assert"
 
 func TestFloat_Compare_Float(t *testing.T) {
-	cases := []struct{
-		name string
+	cases := []struct {
+		name   string
 		n1, n2 string
 		expect int
 	}{
@@ -31,11 +33,11 @@ func TestFloat_Compare_Float(t *testing.T) {
 			"No.7", "-10.986", "1.7", -1,
 		},
 		{
-			"No.4", "1.1", "3.12", -1,
+			"No.8", "1.1", "3.12", -1,
 		},
 	}
 
-	for _, tt := range(cases) {
+	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			num1, _ := NewNumber(tt.n1)
 			num2, _ := NewNumber(tt.n2)

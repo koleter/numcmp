@@ -1,7 +1,7 @@
 package numcmp
 
 type float struct {
-	i int
+	i       string
 	decimal string
 }
 
@@ -17,18 +17,20 @@ func (n1 *float) compare(n2 value) int {
 }
 
 func (n1 *float) compareFloat(n2 *float) int {
-	if n1.i > n2.i || n1.i == n2.i && n1.decimal > n2.decimal {
+	resulti := cmpStringOfInteger(n1.i, n2.i)
+	if resulti == 1 || resulti == 0 && n1.decimal > n2.decimal {
 		return 1
-	} else if n1.i == n2.i && n1.decimal == n2.decimal {
+	} else if resulti == 0 && n1.decimal == n2.decimal {
 		return 0
 	}
 	return -1
 }
 
 func (n1 *float) compareInteger(n2 *integer) int {
-	if n1.i > n2.i || n1.i == n2.i && n1.decimal != "" {
+	resulti := cmpStringOfInteger(n1.i, n2.i)
+	if resulti == 1 || resulti == 0 && n1.decimal != "" {
 		return 1
-	} else if n1.i == n2.i && n1.decimal == "" {
+	} else if resulti == 0 && n1.decimal == "" {
 		return 0
 	}
 	return -1

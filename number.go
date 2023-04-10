@@ -10,7 +10,7 @@ type value interface {
 	compare(n value) int
 }
 
-type number struct {
+type Number struct {
 	neg int
 	value
 }
@@ -31,7 +31,7 @@ func cmpStringOfInteger(n1, n2 string) int {
 	return 0
 }
 
-func (n1 *number) Cmp(n2 *number) int {
+func (n1 *Number) Cmp(n2 *Number) int {
 	sign := n1.cmpSign(n2)
 	if sign != 0 {
 		return sign
@@ -43,7 +43,7 @@ func (n1 *number) Cmp(n2 *number) int {
 	return compare
 }
 
-func (n1 *number) cmpSign(n2 *number) int {
+func (n1 *Number) cmpSign(n2 *Number) int {
 	if n1.neg > n2.neg {
 		return 1
 	} else if n1.neg < n2.neg {
@@ -58,7 +58,7 @@ const (
 	invalidNumber
 )
 
-func NewNumber(str string) (*number, error) {
+func NewNumber(str string) (*Number, error) {
 	neg := 1
 	if str[0] == '-' {
 		neg = -1
@@ -74,14 +74,14 @@ func NewNumber(str string) (*number, error) {
 		if str == "" {
 			str = "0"
 		}
-		return &number{neg, &integer{str}}, nil
+		return &Number{neg, &integer{str}}, nil
 	case floatNumber:
 		str = strings.Trim(str, "0")
 		split := strings.Split(str, ".")
 		if split[0] == "" {
 			split[0] = "0"
 		}
-		return &number{neg, &float{i: split[0], decimal: split[1]}}, nil
+		return &Number{neg, &float{i: split[0], decimal: split[1]}}, nil
 	default:
 		return nil, errors.New("unexpect input str: " + str)
 	}

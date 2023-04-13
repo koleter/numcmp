@@ -11,8 +11,13 @@ type value interface {
 }
 
 type Number struct {
-	neg int
+	neg     int
+	numType int
 	value
+}
+
+func (n *Number) GetNumType() int {
+	return n.numType
 }
 
 func cmpStringOfInteger(n1, n2 string) int {
@@ -53,9 +58,12 @@ func (n1 *Number) cmpSign(n2 *Number) int {
 }
 
 const (
-	intNumber = iota
-	floatNumber
-	invalidNumber
+	IntNumber = 1 << iota
+	FloatNumber
+	InvalidNumber
+
+	// 所有有效的数字类型
+	AllTypeNumber = IntNumber | FloatNumber
 )
 
 func NewNumber(str string) (*Number, error) {
@@ -69,19 +77,19 @@ func NewNumber(str string) (*Number, error) {
 	numType := judgeNumber(str)
 
 	switch numType {
-	case intNumber:
+	case IntNumber:
 		str = strings.TrimLeft(str, "0")
 		if str == "" {
 			str = "0"
 		}
-		return &Number{neg, &integer{str}}, nil
-	case floatNumber:
+		return &Number{neg, numType, &integer{str}}, nil
+	case FloatNumber:
 		str = strings.Trim(str, "0")
 		split := strings.Split(str, ".")
 		if split[0] == "" {
 			split[0] = "0"
 		}
-		return &Number{neg, &float{i: split[0], decimal: split[1]}}, nil
+		return &Number{neg, numType, &float{i: split[0], decimal: split[1]}}, nil
 	default:
 		return nil, errors.New("unexpect input str: " + str)
 	}
@@ -90,11 +98,11 @@ func NewNumber(str string) (*Number, error) {
 func judgeNumber(str string) int {
 	compile := regexp.MustCompile("^\\d+$")
 	if compile.MatchString(str) {
-		return intNumber
+		return IntNumber
 	}
 	compile = regexp.MustCompile("^\\d*\\.\\d*$")
 	if compile.MatchString(str) {
-		return floatNumber
+		return FloatNumber
 	}
-	return invalidNumber
+	return InvalidNumber
 }

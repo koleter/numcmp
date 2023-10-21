@@ -22,16 +22,14 @@ func (n *Number) GetNumType() NumberType {
 }
 
 // AppendRune is a function which equivalent to adding one digit to the end of the current number
-func (n *Number) AppendRune(r rune) (*Number, error) {
+func (n *Number) AppendRune(r rune) error {
 	v, err := n.appendRune(r)
 	if err != nil {
-		return n, err
+		return err
 	}
-	return &Number{
-		neg:     n.neg,
-		numType: getValueNumType(v),
-		value:   v,
-	}, nil
+	n.numType = getValueNumType(v)
+	n.value = v
+	return nil
 }
 
 func getValueNumType(v value) NumberType {
@@ -117,7 +115,6 @@ func NewNumber(str string) (*Number, error) {
 	case FloatNumber:
 		str = strings.Trim(str, "0")
 		split := strings.Split(str, ".")
-		hasDot := strings.Contains(str, ".")
 		if split[0] == "" {
 			split[0] = "0"
 		}
@@ -125,7 +122,7 @@ func NewNumber(str string) (*Number, error) {
 		sb0.WriteString(split[0])
 		sb1 := &strings.Builder{}
 		sb1.WriteString(split[1])
-		return &Number{neg, numType, &float{i: sb0, decimal: sb1, hasDot: hasDot}}, nil
+		return &Number{neg, numType, &float{i: sb0, decimal: sb1, hasDot: true}}, nil
 	default:
 		return nil, errors.New("unexpect input str: " + str)
 	}

@@ -117,7 +117,6 @@ func NewNumber(str string) (*Number, error) {
 	case FloatNumber:
 		str = strings.Trim(str, "0")
 		split := strings.Split(str, ".")
-		hasDot := strings.Contains(str, ".")
 		if split[0] == "" {
 			split[0] = "0"
 		}
@@ -125,7 +124,7 @@ func NewNumber(str string) (*Number, error) {
 		sb0.WriteString(split[0])
 		sb1 := &strings.Builder{}
 		sb1.WriteString(split[1])
-		return &Number{neg, numType, &float{i: sb0, decimal: sb1, hasDot: hasDot}}, nil
+		return &Number{neg, numType, &float{i: sb0, decimal: sb1, hasDot: true}}, nil
 	default:
 		return nil, errors.New("unexpect input str: " + str)
 	}

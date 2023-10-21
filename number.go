@@ -22,16 +22,14 @@ func (n *Number) GetNumType() NumberType {
 }
 
 // AppendRune is a function which equivalent to adding one digit to the end of the current number
-func (n *Number) AppendRune(r rune) (*Number, error) {
+func (n *Number) AppendRune(r rune) error {
 	v, err := n.appendRune(r)
 	if err != nil {
-		return n, err
+		return err
 	}
-	return &Number{
-		neg:     n.neg,
-		numType: getValueNumType(v),
-		value:   v,
-	}, nil
+	n.numType = getValueNumType(v)
+	n.value = v
+	return nil
 }
 
 func getValueNumType(v value) NumberType {

@@ -24,6 +24,9 @@ func TestNewNumber(t *testing.T) {
 		{
 			"No.5", ".", false,
 		},
+		{
+			"No.6", "", true,
+		},
 	}
 
 	for _, tt := range cases {

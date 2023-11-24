@@ -24,9 +24,6 @@ func (n1 *float) appendRune(r rune) (value, error) {
 		return n1, errors.New("invalid byte r")
 	}
 	if n1.hasDot {
-		if strings.TrimLeft(n1.decimal.String(), "0") == "" {
-			n1.decimal.Reset()
-		}
 		n1.decimal.WriteRune(r)
 	} else {
 		if strings.TrimLeft(n1.i.String(), "0") == "" {

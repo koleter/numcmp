@@ -35,6 +35,9 @@ func TestFloat_Compare_Float(t *testing.T) {
 		{
 			"No.8", "1.1", "3.12", -1,
 		},
+		{
+			"No.9", "1.0", "1.00", 0,
+		},
 	}
 
 	for _, tt := range cases {
